@@ -41,11 +41,12 @@ expand_equalstilde(Text =~ Pattern, Vars, regex(P,Options,Text,Vars)) :-
 
 % macro expansion giving access to in-scope variables.
 user:goal_expansion(Text =~ Pattern, Goal) :-
-    % is goal expansion wanted?
+    % is term expansion wanted?
     prolog_load_context(module, Module),
     Module \== regex,  % we don't want string interpolation ourselves
     predicate_property(Module:(_=~_),imported_from(regex)),
 
+    \+var(Pattern),
     prolog_load_context(variable_names, Vars),
     expand_equalstilde(Text =~ Pattern, Vars, Goal).
 
